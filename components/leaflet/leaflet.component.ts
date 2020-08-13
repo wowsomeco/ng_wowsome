@@ -6,7 +6,7 @@ import 'style-loader!leaflet/dist/images/marker-shadow.png';
 
 import { Component, Input, AfterViewInit, OnChanges, SimpleChanges, ChangeDetectionStrategy, OnInit, ChangeDetectorRef } from '@angular/core';
 import { Feature } from '@turf/helpers';
-import { randomId } from 'src/wowsome/scripts/utils';
+import { randomId } from 'src/ng_wowsome/scripts/utils';
 import { Subject } from 'rxjs';
 
 interface TileLayerOption {

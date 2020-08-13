@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
-import { randomId } from 'src/wowsome/scripts/utils';
+import { randomId } from 'src/ng_wowsome/scripts/utils';
 
 /**
  * Acts as a wrapper for native <input type="file"/>

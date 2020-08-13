@@ -5,7 +5,7 @@ import { Component, Output, EventEmitter, Input } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { LeafletDialogComponent } from '../dialog/dialog.component';
 import { FormControlComponent } from '../forms/form-field.component';
-import { getFileExtension, keyWhere, keyIgnoreCase, luasArea, propertyAt } from 'src/wowsome/scripts/utils';
+import { getFileExtension, keyWhere, keyIgnoreCase, luasArea, propertyAt } from 'src/ng_wowsome/scripts/utils';
 
 /**
  * Uploads spatial data and outputs it as an array of Feature on success.

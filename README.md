@@ -11,7 +11,7 @@ git submodule add https://github.com/wowsomeco/ng_wowsome
 Then import the module in your app.module.ts e.g. 
 
 ```typescript
-import { WowsomeModule } from 'src/wowsome/wowsome.module';
+import { WowsomeModule } from 'src/ng_wowsome/wowsome.module';
 
 @NgModule({
   declarations: [...],

@@ -3,7 +3,7 @@ import { ApiService } from '@services/api.service';
 import { PageEvent } from '@angular/material/paginator';
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
-import { tryParseNumber } from 'src/wowsome/scripts/utils';
+import { tryParseNumber } from 'src/ng_wowsome/scripts/utils';
 
 class TableFilter {
   constructor(public operand: string, public value: string | number) { }

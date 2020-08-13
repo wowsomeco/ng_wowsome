@@ -1,7 +1,7 @@
 import { Input, OnDestroy, Component, ContentChild, ViewChild, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import { MatFormFieldControl, MatFormField } from '@angular/material/form-field';
 import { Subject } from 'rxjs';
-import { randomId } from 'src/wowsome/scripts/utils';
+import { randomId } from 'src/ng_wowsome/scripts/utils';
 import { NgControl } from '@angular/forms';
 
 /**
