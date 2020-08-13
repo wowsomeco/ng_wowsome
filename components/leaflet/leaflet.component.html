@@ -1,0 +1,26 @@
+<div class="t-relative t-border t-border-gray-300 t-h-full" [style.height]="height">
+  <div class="t-absolute t-top-0 t-right-0 t-p-2" [style.z-index]="900">
+    <div class="t-flex t-flex-col t-items-end">
+      <mat-icon [wHoverAnim]="['t-text-blue-400', 't-scale-110']" *ngIf="!openSettings" (click)="openSettings = true"
+        class="t-text-blue-700">settings
+      </mat-icon>
+      <div *ngIf="openSettings" class="t-rounded-md t-bg-white t-p-2 t-flex t-flex-col" [style.max-height]="height"
+        wOn="click.stop">
+        <div class="t-mb-2 t-flex t-justify-between t-items-center">
+          <div class="t-text-gray-700">Settings</div>
+          <mat-icon (click)="openSettings = false" class="t-cursor-pointer t-text-red-700">cancel</mat-icon>
+        </div>
+        <w-select label="Select Map" [value]="tileLayerSelected" (valueChange)="changeTileLayer($event)"
+          [options]="tileLayerOptions" [placeholder]="undefined">
+        </w-select>
+        <div class="t-flex t-flex-col t-overflow-y-scroll">
+          <div *ngFor="let l of toggleLayers; let i=index" class="t-mb-2">
+            <mat-checkbox [checked]="l.selected" (change)="toggleLayer(i)" [disableRipple]="true">Layer {{i + 1}}
+            </mat-checkbox>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div [id]="mapId" class="t-h-full"></div>
+</div>

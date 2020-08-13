@@ -1,0 +1,19 @@
+<w-field [label]="label" [loading]="loading">
+  <div class="t-flex t-flex-col">
+    <div class="t-flex t-items-center t-justify-between">
+      <mat-chip-list #chipList>
+        <mat-chip *ngFor="let s of summary; let i=index" [removable]="true" (removed)="removeSummary(i)">
+          {{s}}
+          <mat-icon matChipRemove>cancel</mat-icon>
+        </mat-chip>
+      </mat-chip-list>
+    </div>
+    <div class="t-flex t-items-center t-justify-between t-mt-3">
+      <div class="t-flex t-items-center">
+        <w-btn-upload [disabled]="loading" accept=".zip" [(value)]="selectedFile">Upload</w-btn-upload>
+      </div>
+      <button *ngIf="value" type="button" (click)="openDialog()" color="accent" mat-stroked-button>Lihat
+        Peta</button>
+    </div>
+  </div>
+</w-field>

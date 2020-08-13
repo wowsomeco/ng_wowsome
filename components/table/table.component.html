@@ -1,0 +1,42 @@
+<div class="t-w-full t-relative">
+  <div class="t-p-2">
+    <ng-container *ngTemplateOutlet="filter; context: {$implicit:filterData, emitter:filterObserver}"></ng-container>
+    <div class="t-flex t-justify-between t-items-center">
+      <div>
+        <ng-content select="[slot=title]"></ng-content>
+      </div>
+      <ng-content select="[slot=top-right]"></ng-content>
+    </div>
+    <div *ngIf="!isEmpty" class="t-w-full t-h-full">
+      <mat-table [dataSource]="model" matSort class="t-w-full">
+        <ng-container *ngFor="let col of allCols; let i=index; let odd=odd" [matColumnDef]="col">
+          <mat-header-cell class="t-capitalize" *matHeaderCellDef>{{col}}</mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            <ng-container *ngIf="col === 'actions'">
+              <mat-icon wOn="click.stop" (wListen)="deleteRow(element)" class="t-text-red-500" *ngIf="deletable">
+                cancel</mat-icon>
+              <ng-container *ngTemplateOutlet="acts; context: {$implicit:element, i:i, odd:odd}">
+              </ng-container>
+            </ng-container>
+            <!-- allow caller to set their own row accordingly -->
+            <ng-container *ngTemplateOutlet="row; context: {$implicit:element[col], key:col, i:i, odd:odd}">
+            </ng-container>
+            <!-- if template row is not set, this is the default row -->
+            <div *ngIf="!row">{{element[col]}}</div>
+          </mat-cell>
+        </ng-container>
+        <mat-header-row *matHeaderRowDef="allCols"></mat-header-row>
+        <mat-row class="t-cursor-pointer t-transition t-duration-500 t-ease-in-out hover:t-bg-gray-100"
+          *matRowDef="let row; columns: allCols" (click)="onClickRow(row)">
+        </mat-row>
+      </mat-table>
+      <mat-paginator (page)="changePage($event)" [length]="pageLength" [pageSize]="pageSize"
+        [pageSizeOptions]="[5, 10, 25, 100]">
+      </mat-paginator>
+    </div>
+    <p *ngIf="isEmpty" class="t-text-gray-500 t-flex t-justify-center t-items-center t-h-full">{{noResultMsg}}</p>
+  </div>
+  <w-overlay [show]="loading">
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+  </w-overlay>
+</div>

@@ -1,0 +1,7 @@
+<button class="t-uppercase t-w-full" (click)="onClicked()" mat-raised-button [color]="color" [type]="btnType">
+  <ng-content></ng-content>
+  <mat-icon *ngIf="loading">
+    <mat-spinner [color]="loadingColor" diameter="20">
+    </mat-spinner>
+  </mat-icon>
+</button>

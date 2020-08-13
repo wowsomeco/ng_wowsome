@@ -1,0 +1,11 @@
+<mat-form-field class="t-w-full">
+  <mat-label>{{label}}</mat-label>
+  <!-- placeholder control, until it's supplied by the content child -->
+  <input matInput hidden>
+  <ng-content></ng-content>
+  <div matSuffix>
+    <ng-content select="[slot=suffix]"></ng-content>
+    <mat-spinner *ngIf="loading" class="spinner" diameter="20"></mat-spinner>
+  </div>
+  <mat-hint *ngIf="hint">{{hint}}</mat-hint>
+</mat-form-field>

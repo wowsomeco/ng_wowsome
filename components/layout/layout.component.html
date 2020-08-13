@@ -1,0 +1,20 @@
+<div class="t-flex t-h-screen t-w-screen">
+  <div class="t-h-full t-overflow-auto t-align-top t-border-r" [ngClass]="collapsed ? 't-hidden' : 't-block'"
+    [style.width.%]="sidebarWidth">
+    <ng-content select="[slot=sidebar]"></ng-content>
+  </div>
+  <div class="t-h-full t-align-top t-flex t-flex-col" [style.width.%]="collapsed ? 100 : contentWidth">
+    <div class="t-border-b t-flex t-items-center t-w-full" [style.height.%]="headerHeight">
+      <div class="t-p-2 t-text-blue-800 t-mt-1" [wHoverAnim]="['t-text-blue-500', 't-scale-110']"
+        (click)="collapsed = !collapsed">
+        <mat-icon>{{collapsed ? 'menu' : 'close'}}</mat-icon>
+      </div>
+      <div class="t-flex-auto">
+        <ng-content select="[slot=header]"></ng-content>
+      </div>
+    </div>
+    <div class="t-overflow-y-scroll t-w-full" [style.height.%]="contentHeight">
+      <ng-content select="[slot=main]"></ng-content>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,9 @@
+<div class="t-flex">
+  <div class="t-flex t-items-center" *ngFor="let item of items; let last=last">
+    <div class="t-flex t-items-center" [ngClass]="itemClass(last)">
+      <mat-icon *ngIf="item.icon">{{item.icon}}</mat-icon>
+      <div (click)="clickItem(item, last)">{{item.title}}</div>
+    </div>
+    <mat-icon *ngIf="!last">arrow_right</mat-icon>
+  </div>
+</div>

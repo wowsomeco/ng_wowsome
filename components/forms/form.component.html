@@ -1,0 +1,14 @@
+<form (ngSubmit)="submit()" class="t-relative">
+  <div class="t-w-full t-h-full t-p-2">
+    <ng-content></ng-content>
+    <div class="t-my-2 t-flex t-justify-end t-w-full">
+      <div [style.width]="btnWidth">
+        <w-btn color="primary" loadingColor="accent" btnType="submit">{{submitBtnLabel}}</w-btn>
+      </div>
+    </div>
+  </div>
+  <!-- loading overlay -->
+  <w-overlay [show]="loading">
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+  </w-overlay>
+</form>

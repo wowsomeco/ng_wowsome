@@ -1,0 +1,10 @@
+<div class="t-flex t-items-center t-w-full t-h-full t-border t-border-blue-300 t-rounded-sm">
+  <div class="t-p-2 t-border-r t-text-gray-500">{{fname}}</div>
+  <div class="t-text-blue-300 t-transition t-duration-500 t-ease-in-out hover:t-bg-blue-300 hover:t-text-white">
+    <label class="t-uppercase t-p-2 t-cursor-pointer t-w-full t-flex t-items-center t-justify-between" [for]="id">
+      <ng-content></ng-content>
+    </label>
+    <input [disabled]="disabled" [id]="id" class="t-hidden" type="file" (change)="onFileSelected($event)"
+      [accept]="accept" />
+  </div>
+</div>

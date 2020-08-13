@@ -1,0 +1,13 @@
+<w-field [loading]="loading" [label]="label">
+  <mat-select [value]="value" (valueChange)="valueChanged($event)">
+    <ng-container>
+      <mat-option [value]="null" *ngIf="placeholder">{{placeholder}}</mat-option>
+      <mat-option *ngFor="let item of options" [value]="item[idKey]">
+        {{item[valueKey]}}
+      </mat-option>
+    </ng-container>
+  </mat-select>
+  <ng-container ngProjectAs="[slot=suffix]">
+    <ng-content select="[slot=suffix]"></ng-content>
+  </ng-container>
+</w-field>
