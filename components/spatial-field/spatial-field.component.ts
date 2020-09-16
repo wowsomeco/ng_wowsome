@@ -1,11 +1,11 @@
-import * as JSZip from 'jszip';
-import { Buffer } from 'buffer';
 import { Feature, FeatureCollection } from '@turf/helpers';
 import { Component, Output, EventEmitter, Input } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { LeafletDialogComponent } from '../dialog/dialog.component';
 import { FormControlComponent } from '../forms/form-field.component';
-import { getFileExtension, keyWhere, keyIgnoreCase, luasArea, propertyAt } from 'src/ng_wowsome/scripts/utils';
+import { getFileExtension, keyIgnoreCase, luasArea, propertyAt } from 'src/ng_wowsome/scripts/utils';
+
+import('buffer').then(({ Buffer }) => { global.Buffer = Buffer; });
 
 /**
  * Uploads spatial data and outputs it as an array of Feature on success.
@@ -81,9 +81,12 @@ export class SpatialFieldComponent extends FormControlComponent<Feature[]> {
       case 'zip':
         this.loading = true;
         try {
-          const r = await new JSZip().loadAsync(file);
-          await this._parseFiles(r.files);
-          this.loading = false;
+          const reader = new FileReader();
+          reader.onload = ((ev: ProgressEvent<FileReader>) => {
+            this._parseFiles(ev);
+            this.loading = false;
+          });
+          reader.readAsArrayBuffer(file);
         } catch (err) {
           this.loading = false;
         }
@@ -94,19 +97,13 @@ export class SpatialFieldComponent extends FormControlComponent<Feature[]> {
     }
   }
 
-  private async _getArrayBuffer(zipFiles: Record<string, JSZip.JSZipObject>, filename: string): Promise<ArrayBuffer> {
-    return await zipFiles[keyWhere(zipFiles, filename)].async('arraybuffer');
-  }
-
-  private async _parseFiles(zipFiles: Record<string, JSZip.JSZipObject>): Promise<any> {
+  private async _parseFiles(ev: ProgressEvent<FileReader>): Promise<any> {
     try {
       // get array buffers for each shp, prj, dbf files.
       const shp = require('shpjs');
-      const shpBuffer = await this._getArrayBuffer(zipFiles, 'shp');
-      const prjBuffer = await this._getArrayBuffer(zipFiles, 'prj');
-      const dbfBuffer = await this._getArrayBuffer(zipFiles, 'dbf');
+      const result: FeatureCollection = shp.parseZip(ev.target.result);
       // combine them to get a geojson object in a form of FeatureCollection.
-      const result: FeatureCollection = shp.combine([shp.parseShp(shpBuffer, Buffer.from(prjBuffer)), shp.parseDbf(dbfBuffer)]);
+      // const result: FeatureCollection = shp.combine([shp.parseShp(shpBuffer, Buffer.from(prjBuffer)), shp.parseDbf(dbfBuffer)]);
       // iterate over for each features, calculate the total area in Hectare,
       // the combine it to the properties object
       this.summary = [];
@@ -126,6 +123,7 @@ export class SpatialFieldComponent extends FormControlComponent<Feature[]> {
       // emit the changes
       this.valueChange.emit(features);
       this.totalAreaChange.emit(luasArea(features));
+      this.loading = false;
     } catch (err) {
       alert(err);
       throw new Error(err);
