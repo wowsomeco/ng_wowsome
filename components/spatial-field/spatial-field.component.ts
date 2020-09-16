@@ -99,13 +99,8 @@ export class SpatialFieldComponent extends FormControlComponent<Feature[]> {
 
   private async _parseFiles(ev: ProgressEvent<FileReader>): Promise<any> {
     try {
-      // get array buffers for each shp, prj, dbf files.
       const shp = require('shpjs');
       const result: FeatureCollection = shp.parseZip(ev.target.result);
-      // combine them to get a geojson object in a form of FeatureCollection.
-      // const result: FeatureCollection = shp.combine([shp.parseShp(shpBuffer, Buffer.from(prjBuffer)), shp.parseDbf(dbfBuffer)]);
-      // iterate over for each features, calculate the total area in Hectare,
-      // the combine it to the properties object
       this.summary = [];
       const features: Feature[] = [];
       for (const f of result.features) {
