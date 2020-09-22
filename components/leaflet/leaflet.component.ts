@@ -84,8 +84,26 @@ export class LeafletComponent implements AfterViewInit, OnChanges {
 
   /**
    * You can specify your own pop up html tag for each [[features]] in a form of string
+   * e.g.
+   * ```typescript
+   * (f: Feature) => {
+   *  return `
+   *  <div class="t-flex t-flex-col t-mb-1">
+   *    <span class="t-font-bold">${title}</span>
+   *    <span class="t-text-blue-500">${feature.properties[k]}</span>
+   *    <button>click me</button>
+   *  </div>
+   *  `
+   * }
+   * ```
    */
   @Input() featurePopup: (f: Feature) => string;
+
+  /**
+   * The clear observable.
+   * if set, then whenever the clear event gets triggered from the parent, it will clear the current existing layers.
+   */
+  @Input() clear: Subject<void>;
 
   // might want to define this in LeafletService later so that it's customizable by the caller
   tileLayerOptions: TileLayerOption[] = [
@@ -196,6 +214,8 @@ export class LeafletComponent implements AfterViewInit, OnChanges {
 
     this.setTileLayer();
     this.newFeatures();
+    // observe clear ev on init.
+    if (this.clear) { this.clear.subscribe(() => this.clearLayer()); }
   }
 
   ngOnChanges(_: SimpleChanges): void {
