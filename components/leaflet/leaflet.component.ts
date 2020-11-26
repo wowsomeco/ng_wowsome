@@ -83,21 +83,26 @@ export class LeafletComponent implements AfterViewInit, OnChanges {
   @Input() features: Array<Feature[]> = [];
 
   /**
-   * You can specify your own pop up html tag for each [[features]] in a form of string
+   * Callback for each the feature getting rendered by Leaflet.
    * e.g.
    * ```typescript
-   * (f: Feature) => {
-   *  return `
-   *  <div class="t-flex t-flex-col t-mb-1">
-   *    <span class="t-font-bold">${title}</span>
-   *    <span class="t-text-blue-500">${feature.properties[k]}</span>
-   *    <button>click me</button>
-   *  </div>
-   *  `
+   * (feature, layer) => {
+   *  let props = '';
+   *  for (const k in feature.properties) {
+   *   if (feature.properties[k]) {
+   *     const title = k;
+   *     props += `
+   *     <div class="t-flex t-flex-col t-mb-1">
+   *       <span class="t-font-bold">${title}</span>
+   *       <span class="t-text-blue-500">${feature.properties[k]}</span>
+   *     </div>`;
+   *   }
+   *  }
+   *  layer.bindPopup(props);
    * }
    * ```
    */
-  @Input() featurePopup: (f: Feature) => string;
+  @Input() onEachFeature: (f: Feature, layer /*: Layer*/) => void;
 
   /**
    * The clear observable.
@@ -164,23 +169,7 @@ export class LeafletComponent implements AfterViewInit, OnChanges {
     this.features.forEach(features => {
       const p = L.geoJSON(features, {
         onEachFeature: (feature, layer) => {
-          if (this.featurePopup) {
-            layer.bindPopup(this.featurePopup(feature));
-          } else {
-            // Default Pop Up, if featurePopup is not defined
-            let props = '';
-            for (const k in feature.properties) {
-              if (feature.properties[k]) {
-                const title = k;
-                props += `
-                <div class="t-flex t-flex-col t-mb-1">
-                  <span class="t-font-bold">${title}</span>
-                  <span class="t-text-blue-500">${feature.properties[k]}</span>
-                </div>`;
-              }
-            }
-            layer.bindPopup(props);
-          }
+          if (this.onEachFeature) { this.onEachFeature(feature, layer); }
         },
         style: f => {
           if (!this._service.styleProviders) { return undefined; }
