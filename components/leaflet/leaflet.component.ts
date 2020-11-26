@@ -169,7 +169,7 @@ export class LeafletComponent implements AfterViewInit, OnChanges {
     this.features.forEach(features => {
       const p = L.geoJSON(features, {
         onEachFeature: (feature, layer) => {
-          if (this.onEachFeature) { this.onEachFeature(feature, layer); }
+          this.onEachFeature?.(feature, layer);
         },
         style: f => {
           if (!this._service.styleProviders) { return undefined; }
